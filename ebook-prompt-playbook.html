@@ -1,0 +1,1983 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>코딩 몰라도 AI로 완성하는 토스 미니앱 수익화 실전 가이드</title>
+    <meta
+      name="description"
+      content="비개발자와 1인 창업가가 Cursor, Claude Code, Codex, Copilot 등 어떤 AI 코딩 도구로도 토스 미니앱 MVP를 만들고 TDS, 샌드박스, Firebase, 광고, 공유, 분석, 앱테크, QA, 배포까지 따라가는 실전 전자책"
+    />
+            <style>
+      @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+      :root {
+        --bg-body: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-card-hover: #fcfdfe;
+        
+        --brand-primary: #3182f6; /* Toss Blue - Used selectively as the primary 20% accent color */
+        --brand-primary-light: #e8f3ff;
+        --brand-primary-dark: #1b64da;
+        
+        --text-primary: #000000; /* Pure Black for Headings */
+        --text-secondary: #111111; /* Dark Black for Body text */
+        --text-tertiary: #3c424b; /* Darker Slate for Subheadings/Labels */
+        --text-muted: #5a606a; /* Slate Grey for Muted info */
+        
+        --border-color: #e5e8eb;
+        --border-color-strong: #d1d6db;
+        
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.04);
+        --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.06);
+        
+        --radius-lg: 24px;
+        --radius-md: 16px;
+        --radius-sm: 10px;
+        
+        --max-width: 1200px;
+        --content-width: 800px;
+        
+        /* Unified Blue & Neutral Callout Colors */
+        --note-bg: #f8fafc;
+        --note-border: #e5e8eb;
+        --note-left-border: #64748b;
+        --note-text: #111111;
+        
+        --cta-bg: #f2f7ff;
+        --cta-border: #dbeafe;
+        --cta-text: #1e3a8a;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-body);
+        color: var(--text-primary);
+        font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      img {
+        max-width: 100%;
+        border-radius: var(--radius-sm);
+      }
+
+      code {
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #f1f5f9;
+        font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 0.9em;
+        color: #334155;
+        font-weight: 500;
+      }
+
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 4px;
+        background: linear-gradient(90deg, #3182f6, #60a5fa);
+        z-index: 1000;
+        transition: width 0.1s ease-out;
+      }
+
+      .page-shell {
+        width: min(calc(100% - 32px), var(--max-width));
+        margin: 0 auto;
+        padding: 40px 0 100px;
+      }
+
+      .hero {
+        background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 60px 48px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: '';
+        position: absolute;
+        top: -20%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(49, 130, 246, 0.05) 0%, rgba(255,255,255,0) 70%);
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 16px;
+        background: var(--brand-primary-light);
+        color: var(--brand-primary);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        margin-bottom: 24px;
+        z-index: 1;
+        position: relative;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 40px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        font-size: clamp(32px, 4vw, 46px);
+        line-height: 1.25;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.03em;
+      }
+
+      .hero p {
+        margin-top: 20px;
+        font-size: 16px;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      .hero p strong {
+        color: var(--brand-primary);
+        font-weight: 700;
+      }
+
+      .notice {
+        margin-top: 20px;
+        padding: 16px 20px;
+        border-radius: var(--radius-sm);
+        background: #f8fafc;
+        border-left: 4px solid var(--brand-primary);
+        font-size: 15px;
+        color: var(--text-secondary);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .notice strong {
+        color: var(--brand-primary);
+        font-weight: 700;
+      }
+
+      .hero-meta {
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+
+      .meta-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .meta-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .meta-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--text-tertiary);
+        text-transform: uppercase;
+      }
+
+      .meta-value {
+        margin-top: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1.5;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, var(--content-width)) 280px;
+        gap: 40px;
+        align-items: start;
+        margin-top: 20px;
+      }
+
+      .content {
+        display: grid;
+        gap: 40px;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 40px;
+      }
+
+      .sidebar-card {
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 24px;
+        background: var(--bg-card);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .sidebar h2 {
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-tertiary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 8px;
+      }
+
+      .toc {
+        display: grid;
+        gap: 6px;
+      }
+
+      .toc a {
+        display: block;
+        padding: 8px 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .toc a:hover {
+        background: #f1f5f9;
+        color: var(--brand-primary);
+        padding-left: 16px;
+      }
+
+      .toc a.active {
+        background: var(--brand-primary-light);
+        color: var(--brand-primary);
+        font-weight: 700;
+        padding-left: 16px;
+      }
+
+      .chapter {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 48px;
+        box-shadow: var(--shadow-sm);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .chapter:hover {
+        box-shadow: var(--shadow-md);
+      }
+
+      .chapter-header {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 28px;
+      }
+
+      .chapter-number {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--brand-primary);
+        text-transform: uppercase;
+        background: var(--brand-primary-light);
+        padding: 4px 10px;
+        border-radius: 6px;
+        width: max-content;
+      }
+
+      .chapter h2 {
+        font-size: clamp(24px, 3.5vw, 30px);
+        line-height: 1.3;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+      }
+
+      .chapter p {
+        font-size: 16px;
+        color: var(--text-secondary);
+        margin-top: 16px;
+      }
+
+      .chapter p strong {
+        color: var(--text-primary);
+        font-weight: 700;
+        background: linear-gradient(180deg, rgba(255,255,255,0) 70%, rgba(49, 130, 246, 0.08) 70%);
+        padding: 0 2px;
+      }
+
+      .chapter ul,
+      .chapter ol {
+        margin-top: 16px;
+        padding-left: 24px;
+        color: var(--text-secondary);
+      }
+
+      .chapter li {
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      .chapter strong {
+        font-weight: 700;
+      }
+
+      .image-placeholder {
+        margin: 24px 0;
+        padding: 32px 24px;
+        border-radius: var(--radius-md);
+        border: 2px dashed var(--border-color-strong);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        text-align: center;
+      }
+
+      .image-placeholder-title {
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .image-placeholder p {
+        color: var(--text-tertiary);
+        font-size: 14px;
+      }
+
+      .prompt-card {
+        margin-top: 32px;
+        border-radius: var(--radius-md);
+        border: 1px solid #334155;
+        background: #0f172a; /* Slate 900 */
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+      }
+
+      .prompt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background: #1e293b; /* Slate 800 */
+        border-bottom: 1px solid #334155;
+      }
+
+      .prompt-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: #f8fafc;
+      }
+
+      .copy-button {
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #475569;
+        background: #334155;
+        color: #f1f5f9;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .copy-button:hover {
+        background: #475569;
+        border-color: #64748b;
+        color: #ffffff;
+      }
+
+      .copy-button svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .prompt-description {
+        padding: 16px 20px 0;
+        margin: 0;
+        color: #94a3b8; /* Slate 400 */
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .execution-note {
+        display: grid;
+        gap: 12px;
+        padding: 20px;
+        background: #f8fafc;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .execution-note p {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.6;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      /* Unified Blue/Grey status badges inside execution notes */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 6px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        min-width: 90px;
+        text-align: center;
+      }
+
+      .badge-pos {
+        background-color: #e8f3ff;
+        color: #3182f6;
+      }
+
+      .badge-success {
+        background-color: #e0f2fe;
+        color: #0369a1;
+      }
+
+      .badge-danger {
+        background-color: #f1f5f9;
+        color: #475569;
+      }
+
+      .badge-reprompt {
+        background-color: #f1f5f9;
+        color: #3182f6;
+        border: 1px solid rgba(49, 130, 246, 0.2);
+      }
+
+      pre {
+        margin: 16px 20px;
+        padding: 16px;
+        border-radius: 8px;
+        background: #020617; /* Darker Slate */
+        border: 1px solid #1e293b;
+        color: #e2e8f0;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+        font-size: 13.5px;
+        line-height: 1.7;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .checklist,
+      .easy-note,
+      .quote-card,
+      .cta-box {
+        padding: 24px;
+      }
+
+      .checklist h3,
+      .easy-note h3,
+      .quote-card h3,
+      .cta-box h3 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        letter-spacing: -0.01em;
+      }
+
+      .checklist {
+        margin-top: 24px;
+        border-radius: var(--radius-md);
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+      }
+
+      .checklist h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+      }
+
+      .checklist ul {
+        list-style: none !important;
+        padding-left: 0 !important;
+        display: grid;
+        gap: 12px;
+      }
+
+      .checklist li {
+        position: relative;
+        padding-left: 28px;
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 0;
+      }
+
+      .checklist li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 3px;
+        width: 18px;
+        height: 18px;
+        background-size: contain;
+        background-repeat: no-repeat;
+      }
+
+      /* Unified checklist sub-classes with blue/slate SVGs */
+      .checklist li::before,
+      .checklist.checklist-check li::before,
+      .checklist.checklist-prepare li::before,
+      .checklist.checklist-doc li::before,
+      .checklist.checklist-tool li::before,
+      .checklist.checklist-loop li::before,
+      .checklist.checklist-split li::before,
+      .checklist.checklist-step li::before,
+      .checklist.checklist-scope li::before,
+      .checklist.checklist-monetize li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      }
+
+      .checklist.checklist-fit li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      }
+
+      .checklist.checklist-fit {
+        border-left: 4px solid var(--brand-primary);
+        background: #ffffff;
+      }
+
+      .checklist.checklist-fit h3 {
+        color: var(--text-primary);
+      }
+
+      .checklist.checklist-unfit li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+      }
+
+      .checklist.checklist-unfit {
+        border-left: 4px solid #94a3b8;
+        background: #ffffff;
+      }
+
+      .checklist.checklist-unfit h3 {
+        color: var(--text-primary);
+      }
+
+      .checklist.checklist-warning li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
+      }
+
+      .checklist.checklist-warning {
+        border-left: 4px solid #60a5fa;
+        background: #ffffff;
+      }
+
+      .checklist.checklist-warning h3 {
+        color: var(--text-primary);
+      }
+
+      .checklist.checklist-schedule li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+      }
+
+      .checklist.checklist-metric li::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='20' x2='18' y2='10'%3E%3C/line%3E%3Cline x1='12' y1='20' x2='12' y2='4'%3E%3C/line%3E%3Cline x1='6' y1='20' x2='6' y2='14'%3E%3C/line%3E%3C/svg%3E");
+      }
+
+      .easy-note {
+        margin-top: 24px;
+        border-radius: var(--radius-md);
+        background-color: var(--note-bg);
+        border: 1px solid var(--note-border);
+        border-left: 4px solid var(--brand-primary);
+        color: var(--note-text);
+      }
+
+      .easy-note h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .easy-note h3::before {
+        content: "💡";
+      }
+
+      .easy-note p {
+        color: var(--text-secondary) !important;
+        font-size: 15px;
+        font-weight: 500; /* slightly bolder for readability on light yellow background */
+      }
+
+      .easy-note p + p {
+        margin-top: 10px;
+      }
+
+      .easy-note strong {
+        color: var(--brand-primary-dark);
+      }
+
+      .quote-card {
+        margin-top: 24px;
+        border-radius: var(--radius-md);
+        padding: 28px;
+        background-color: #f8fafc;
+        border: 1px solid var(--border-color);
+        position: relative;
+      }
+
+      .quote-card::before {
+        content: '“';
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 80px;
+        color: rgba(49, 130, 246, 0.08);
+        font-family: Georgia, serif;
+        line-height: 1;
+      }
+
+      .quote-card h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--brand-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+      }
+
+      .quote-card blockquote {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.6;
+        font-weight: 600;
+        color: var(--text-primary);
+        position: relative;
+        z-index: 1;
+      }
+
+      .quote-card cite {
+        display: block;
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--text-tertiary);
+        font-style: normal;
+        font-weight: 500;
+      }
+
+      .cta-box {
+        margin-top: 24px;
+        border-radius: var(--radius-md);
+        background-color: var(--cta-bg);
+        border: 1px solid var(--cta-border);
+        color: var(--cta-text);
+      }
+
+      .cta-box h3 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--brand-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .cta-box h3::before {
+        content: "🎯";
+      }
+
+      .cta-box ol {
+        padding-left: 20px;
+        color: #1e3a8a !important;
+      }
+
+      .cta-box li {
+        font-size: 15px;
+        margin-bottom: 8px;
+      }
+
+      .footer-note {
+        margin-top: 40px;
+        text-align: center;
+        color: var(--text-tertiary);
+        font-size: 13px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border-color);
+        margin: 40px 0;
+      }
+
+      @media (max-width: 1024px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          margin-bottom: 30px;
+        }
+
+        .toc {
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 8px;
+        }
+
+        .toc a {
+          white-space: normal;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .page-shell {
+          padding: 20px 0 60px;
+        }
+
+        .hero {
+          padding: 40px 24px;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .chapter {
+          padding: 32px 24px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chapter-header {
+          margin-bottom: 20px;
+        }
+
+        .copy-button {
+          padding: 6px 10px;
+          font-size: 11px;
+        }
+
+        pre {
+          font-size: 12px;
+          margin: 12px 10px;
+          padding: 12px;
+        }
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+        }
+
+        .sidebar,
+        .copy-button,
+        #scroll-progress {
+          display: none !important;
+        }
+
+        .page-shell {
+          width: 100%;
+          padding: 0;
+        }
+
+        .chapter {
+          box-shadow: none !important;
+          border: 1px solid #cbd5e1;
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body> <div id="scroll-progress"></div>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="eyebrow">토스 미니앱 전자책</div>
+        <div class="hero-grid">
+          <div>
+            <h1>AI로 토스 미니앱 만들기, 수익화까지</h1>
+            <p>
+              이 책은 비개발자와 1인 창업가를 위한 실전 가이드입니다.
+              토스 미니앱을 하나 만들고, 광고·공유·Firebase·배포까지 끝내는 순서를 담았습니다.
+              <strong>무엇을 만들지, 어떻게 검증할지, 어디서 자주 막히는지</strong>부터 먼저 보여줍니다.
+            </p>
+            <div class="notice">
+              수익을 약속하진 않아요. 대신 <strong>수익화 가능성을 검증할 수 있는 MVP를 직접 만들게 돕습니다.</strong>
+            </div>
+            <div class="notice">
+              모든 프롬프트에는 <strong>어디에 넣는지, 어떤 결과가 나와야 하는지, 다시 어떻게 물어보면 되는지</strong>를 함께 적었습니다.
+            </div>
+          </div>
+          <div class="hero-meta">
+            <div class="meta-card">
+              <div class="meta-label">권장 독자</div>
+              <div class="meta-value">AI로 첫 토스 미니앱을 끝까지 만들어보고 싶은 사람</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-label">읽고 나면 얻는 결과</div>
+              <div class="meta-value">7일 MVP 1개 · 수익화 구조 3개 · 앱테크 구조 1개</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-label">이 책의 차별점</div>
+              <div class="meta-value">실제 제작 경험에서 나온 체크리스트 · 프롬프트 · 운영 기준</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="layout">
+        <main class="content">
+          <section class="chapter" id="chapter-0">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 00</div>
+              <h2>3주 만에 50만 원을 벌어다 준 미니앱</h2>
+            </div>
+            <p>
+              "미니앱으로 진짜 수익을 낼 수 있을까요?"
+            </p>
+            <p>
+              거창한 아이디어나 대규모 코딩 지식이 없어도 괜찮습니다. 실제로 <strong>5월 10일에 출시한 미니앱이 단 3주 만에 약 57만 원(578,614원)의 매출</strong>을 달성했습니다.
+            </p>
+            <p>
+              현재는 <strong>총 10개의 미니앱을 직접 운영</strong>하며 꾸준하게 들어오는 광고 수익 파이프라인을 구축해 나가고 있습니다.
+            </p>
+
+            <div class="revenue-dashboard" style="margin: 28px 0; text-align: center;">
+              <img src="images/revenue.png" alt="5월 미니앱 광고 수익 대시보드" style="width: 100%; max-width: 640px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: block; margin: 0 auto 12px;" />
+              <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">실제 운영 중인 미니앱의 5월 한 달간 AdMob 광고 수익 인증</span>
+            </div>
+
+            <p>
+              이 책은 단순한 개념 요약본이 아닙니다. 비개발자와 1인 창업가가 AI 도구를 활용해 7일 만에 기획부터 배포, 그리고 실제 수익화 장치까지 끝내는 실전 프로세스를 그대로 보여줍니다.
+            </p>
+          </section>
+
+          <section class="chapter" id="chapter-1">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 01</div>
+              <h2>이 책으로 할 수 있는 일</h2>
+            </div>
+            <p>
+              이 책은 “버튼만 누르면 자동으로 돈 번다”는 식으로 말하지 않습니다.
+              대신 <strong>AI를 써서 토스 미니앱 MVP를 끝까지 만드는 방법</strong>을 알려줍니다.
+            </p>
+            <p>
+              토스 미니앱은 일반 웹앱과 다릅니다. TDS, 샌드박스, 앱 설정, WebView 검증까지 같이 봐야 합니다.
+              이 책은 그 순서를 헷갈리지 않게 정리했습니다.
+            </p>
+
+            <div class="easy-note">
+              <h3>쉬운 설명</h3>
+              <p>
+                핵심은 간단합니다. <strong>복붙하고, 실행하고, 막히면 다시 고치는 흐름</strong>을 끝까지 가져가는 겁니다.
+              </p>
+              <p>
+                하루 60~90분씩 보면 7일 안에 한 번 끝낼 수 있습니다. 완전 초보라면 10~14일 정도 잡으면 됩니다.
+              </p>
+            </div>
+
+            <div class="checklist">
+              <h3>이 책이 잘 맞는 사람</h3>
+              <ul>
+                <li>토스 미니앱으로 부업형 MVP를 만들고 싶은 사람</li>
+                <li>공식 문서를 읽어도 실제 구현 순서가 감이 안 오는 사람</li>
+                <li>AI가 준 코드를 어디에 붙여야 하는지까지 알고 싶은 사람</li>
+                <li>광고, 공유, Firebase, 배포까지 한 흐름으로 배우고 싶은 사람</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>이 책이 잘 안 맞는 사람</h3>
+              <ul>
+                <li>수익을 보장하는 쉬운 부업 자료를 찾는 사람</li>
+                <li>코드 없이 노코드만으로 토스 미니앱을 끝내고 싶은 사람</li>
+                <li>플랫폼 정책, 검수, 광고 효율 검증 없이 바로 매출만 기대하는 사람</li>
+              </ul>
+            </div>
+
+            <div class="cta-box">
+              <h3>읽고 나면 할 수 있는 일</h3>
+              <ol>
+                <li>아이디어 1개를 토스 미니앱 MVP로 줄이는 법</li>
+                <li>AI에게 필요한 문맥만 먼저 주는 법</li>
+                <li>TDS와 샌드박스로 첫 화면을 검증하는 법</li>
+                <li>Firebase, 광고, 공유, 배포를 한 흐름으로 묶는 법</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-2">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 02</div>
+              <h2>왜 공식 문서만으로는 자주 막힐까</h2>
+            </div>
+            <p>
+              공식 문서는 꼭 필요합니다. 다만 <strong>무엇부터 해야 하는지</strong>까지 대신 정해주진 않습니다.
+            </p>
+            <p>
+              AI도 마찬가지입니다. 문맥을 주지 않으면 그럴듯하지만 맞지 않는 코드를 내놓습니다.
+              이 책은 그 틈을 메우려고 만들었습니다.
+            </p>
+
+            <div class="quote-card">
+              <h3>이 책의 기준</h3>
+              <blockquote>
+                문서는 규칙을 알려주고, AI는 초안을 만들어줍니다.<br /><br />
+                실제로 끝까지 가는 MVP는 <strong>실행 순서와 예외 처리</strong>에서 갈립니다.
+              </blockquote>
+              <cite>이 전자책이 해결하려는 문제</cite>
+            </div>
+
+            <div class="checklist">
+              <h3>실제로 자주 막히는 지점</h3>
+              <ul>
+                <li>TDS는 루트 Provider와 색상 토큰이 빠지면 overlay와 배경이 쉽게 깨진다.</li>
+                <li>브라우저 개발 환경에서는 토스 SDK 호출 대신 fallback이 있어야 흐름 검증이 가능하다.</li>
+                <li>보상형 광고는 load 와 show 를 분리하고 콜백 흐름을 명확히 기록해야 한다.</li>
+                <li>Firestore는 읽기 지연이나 실패에 대비해 local fallback 과 재동기화 전략이 필요하다.</li>
+                <li>배포 뒤에는 env, 서버 함수, cron, 로그까지 운영 관점으로 다시 봐야 한다.</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 1. 수익형 미니앱 PRD 만들기</h3>
+                <button class="copy-button" data-copy-target="prompt-1">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                앱 아이디어를 7일 안에 출시 가능한 토스 미니앱 MVP로 줄일 때 사용합니다.
+              </p>
+              <pre id="prompt-1">너는 앱인토스 미니앱 PM이자 수익화 전략가야.
+
+가상의 비게임 미니앱 "행운 노트"를 7일 안에 출시 가능한 MVP로 기획하려고 해.
+사용자는 매일 운세 카드 1장을 열고, 마음에 드는 문장을 저장하고, 친구에게 공유할 수 있어.
+광고는 보너스 카드 열람 보상형으로 붙이고 싶어.
+
+[원하는 결과]
+1. 서비스 한 줄 소개
+2. 핵심 사용자 시나리오 3개
+3. 최소 기능 범위(MVP)
+4. 수익화 장치 2개
+5. 화면 목록과 각 화면의 역할
+6. 데이터 구조 초안
+7. 첫 출시에서 제외할 기능
+8. 출시 후 바로 볼 핵심 지표 5개
+
+앱인토스 WebView 미니앱에 맞는 현실적인 범위로 정리해줘.</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> ChatGPT, Claude, Copilot Chat 어디든 좋지만 한 세션에서 계속 이어가는 편이 좋습니다.</p>
+                <p><strong>정상 결과</strong> MVP, 제외 기능, 수익화 장치, 측정 지표가 한 번에 정리됩니다.</p>
+                <p><strong>이상 신호</strong> 로그인, 커뮤니티, 랭킹, 알림 센터처럼 범위가 큰 기능이 붙으면 과한 설계입니다.</p>
+                <p><strong>재프롬프트</strong> “앱인토스 WebView 미니앱 전제로, 7일 안에 출시 가능한 MVP만 남기고 다시 정리해줘.”</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-3">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 03</div>
+              <h2>시작 전에 환경부터 맞춥니다</h2>
+            </div>
+            <p>
+              처음 막히는 이유는 코드가 아니라 준비물입니다.
+              편집기, Node, Firebase, 토스 콘솔, 샌드박스가 안 맞으면 AI가 좋은 코드를 줘도 앞으로 나아가기 어렵습니다.
+            </p>
+            <p>
+              그래서 먼저 실습 가능한 상태를 만듭니다. 이 단계를 건너뛰면 나중에 원인을 찾기 더 어려워집니다.
+            </p>
+
+            <div class="checklist">
+              <h3>시작 전에 필요한 준비물</h3>
+              <ul>
+                <li>코드 편집기 또는 AI 코딩 도구 1개(Cursor, Claude Code, Codex, VS Code + Copilot 등)</li>
+                <li>기본 터미널 사용법</li>
+                <li>Node.js LTS 와 npm</li>
+                <li>Firebase 계정과 새 프로젝트 1개</li>
+                <li>앱인토스 콘솔 접근 권한 및 앱 검토 요청 (승인까지 2~3일 소요되므로 개발 전 신청 권장 - 이름, 아이콘, 컨셉만 작성)</li>
+                <li>앱 아이콘 이미지 (ChatGPT의 DALL-E 이미지 생성 기능을 이용하면 간편함)</li>
+                <li>공식 문서를 붙여 넣거나 연결할 수 있는 AI 도구 1개 이상</li>
+                <li>앱인토스 샌드박스 앱 또는 실제 토스 앱 WebView 테스트 환경</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>어떤 AI 도구를 써도 공통으로 필요한 것</h3>
+              <ul>
+                <li>파일을 직접 열고 수정할 수 있는 환경</li>
+                <li>공식 문서 URL, <code>llms.txt</code>, <code>llms-full.txt</code>, TDS 문서를 AI에 연결하는 방법</li>
+                <li>터미널 출력, 오류 로그, 파일 경로를 함께 보여주는 습관</li>
+                <li>같은 세션에서 맥락을 이어가며 재질문할 수 있는 작업 방식</li>
+              </ul>
+            </div>
+
+            <div class="easy-note">
+              <h3>쉬운 설명</h3>
+              <p>
+                이 책의 출발점은 코딩이 아니라 <strong>실습 가능한 환경 만들기</strong>입니다.
+              </p>
+              <p>
+                브라우저에서 화면이 보인다고 끝이 아닙니다. 샌드박스 앱과 실제 WebView에서 다시 봐야 합니다.
+              </p>
+            </div>
+
+            <div class="checklist">
+              <h3>현실적인 일정표</h3>
+              <ul>
+                <li>경험자: 하루 60~90분 기준 7일</li>
+                <li>완전 초보: 10~14일 정도로 여유 있게 잡는 편이 안전함</li>
+                <li>광고, 배포, 검수 준비까지 하면 마지막 2일은 검증에 쓰는 편이 좋음</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 2. AI 툴 공통 작업환경 점검표 만들기</h3>
+                <button class="copy-button" data-copy-target="prompt-2">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                시작 전에 계정, 도구, 설치 항목, 첫 실행 순서를 빠르게 정리할 때 사용합니다.
+              </p>
+              <pre id="prompt-2">너는 앱인토스 미니앱 온보딩 코치야.
+
+토스 미니앱을 처음 만드는 비개발자가 실습을 시작하려고 해.
+Cursor, Claude Code, Codex, VS Code + Copilot 중 하나를 사용해 토스 미니앱을 만들 예정이야.
+Node.js, Firebase, 앱인토스 콘솔, 샌드박스 테스트까지 준비 상태를 점검하는 체크리스트를 만들어줘.
+
+[출력 조건]
+1. 필수 계정 목록
+2. 필수 설치 항목
+3. 첫 실행 전에 끝내야 할 설정
+4. 시작 전에 막히기 쉬운 문제 10개
+5. 하루 60~90분 기준 7일 학습 계획
+6. 초보자용 우선순위 순서
+7. AI 도구별로 문서 연결을 어떻게 시작하면 좋은지도 함께 정리</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 책을 읽기 전에 먼저 실행해서 준비물 체크표를 받아두세요.</p>
+                <p><strong>정상 결과</strong> 설치, 계정, 테스트 기기, 일정표까지 한 번에 보입니다.</p>
+                <p><strong>이상 신호</strong> 도구 목록만 길게 나오고 실제 순서가 없으면 다시 요구해야 합니다.</p>
+                <p><strong>재프롬프트</strong> “초보자가 바로 실행할 수 있게 순서형 체크리스트로 다시 써줘.”</p>
+              </div>
+            </div>
+
+            <div class="cta-box">
+              <h3>처음 막히면 이렇게 봅니다</h3>
+              <ol>
+                <li>실행 로그가 있는지 본다.</li>
+                <li><code>.env.local</code> 과 앱 설정 파일 누락이 없는지 본다.</li>
+                <li>브라우저에서만 본 것이 아닌지 확인한다.</li>
+                <li>샌드박스 실행 조건과 기기 네트워크 상태를 확인한다.</li>
+                <li>그래도 안 되면 로그와 파일 경로를 포함해 AI에 다시 묻는다.</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-4">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 04</div>
+              <h2>먼저 돈 되는 MVP부터 정합니다</h2>
+            </div>
+            <p>
+              이 책의 예제는 <strong>행운 노트</strong>입니다. 매일 카드 한 장을 열고, 저장하고, 공유하는 간단한 앱입니다.
+            </p>
+            <p>
+              간단하지만 필요한 건 거의 다 들어 있습니다. 광고, 저장, 공유, OG, 재방문 설계까지 한 번에 연습할 수 있습니다.
+            </p>
+
+            <div class="checklist">
+              <h3>행운 노트 기본 MVP 범위</h3>
+              <ul>
+                <li>오늘의 운세 카드 1장을 여는 홈 화면</li>
+                <li>문장 저장과 저장 목록 보기</li>
+                <li>친구에게 공유하는 링크 버튼</li>
+                <li>보너스 카드 열람을 위한 보상형 광고 지면</li>
+                <li>브랜드 색상과 아이콘이 반영된 앱 설정</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>같은 구조로 확장 가능한 수익화 모델 3개</h3>
+              <ul>
+                <li><strong>콘텐츠형</strong>: 오늘의 운세, 오늘의 조언, 오늘의 카드처럼 매일 다시 열게 만드는 구조</li>
+                <li><strong>적립형</strong>: 일정 행동 후 광고를 보고 포인트나 보상을 받는 구조</li>
+                <li><strong>정보형</strong>: 시세, 가격, 알림형 정보를 제공하고 저장·재방문을 유도하는 구조</li>
+              </ul>
+            </div>
+
+            <div class="quote-card">
+              <h3>수익화 원칙</h3>
+              <blockquote>
+                광고를 붙이기 전에, 왜 광고를 보는지부터 보여줘야 합니다.
+              </blockquote>
+              <cite>수익화가 기능이 아니라 장치인 이유</cite>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 3. 수익형 MVP 구조 설계</h3>
+                <button class="copy-button" data-copy-target="prompt-3">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                가상 예제를 실제 판매 가능한 MVP 구조로 바꾸고 수익화 포인트를 잡을 때 사용합니다.
+              </p>
+              <pre id="prompt-3">너는 토스 미니앱 PM이자 수익화 기획자야.
+
+가상의 앱 "행운 노트"를 실제 출시 가능한 MVP로 설계하고 싶어.
+핵심은 매일 재방문, 공유, 보상형 광고, 저장 기능이야.
+
+[출력 조건]
+1. 홈 / 상세 / 저장 / 공유 흐름을 포함한 화면 구조
+2. 무료 기능과 광고 보상 기능 구분
+3. 첫 7일 안에 구현할 범위
+4. 첫 출시에서 제외할 기능
+5. 리텐션에 유리한 장치 3개
+6. 광고 외 추가 수익화 아이디어 3개
+7. 꼭 봐야 할 핵심 지표 5개</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> PRD 초안 다음 단계에서 사용하면 좋습니다.</p>
+                <p><strong>정상 결과</strong> 무료/광고 보상 구분과 재방문 장치가 함께 제안됩니다.</p>
+                <p><strong>이상 신호</strong> 기능이 많고 화면 수가 과도하게 늘어나면 7일 범위를 벗어난 설계입니다.</p>
+                <p><strong>재프롬프트</strong> “화면 4개 안쪽, 7일 MVP 기준으로 더 작게 줄여줘.”</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-5">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 05</div>
+              <h2>AI에게 먼저 문맥을 줍니다</h2>
+            </div>
+            <p>
+              AI는 질문을 잘한다고 잘 쓰는 게 아닙니다. 먼저 어떤 앱인지 정확히 알려줘야 합니다.
+            </p>
+            <p>
+              토스 미니앱 WebView, TDS, <code>granite.config.ts</code>, 샌드박스 검증.
+              이 네 가지는 처음부터 같이 줘야 합니다.
+            </p>
+            <p>
+              문서도 먼저 연결해두면 좋습니다. <code>llms.txt</code>, <code>llms-full.txt</code>, TDS 문서만 붙여도 답변 품질이 많이 달라집니다.
+            </p>
+
+            <div class="easy-note">
+              <h3>쉬운 설명</h3>
+              <p>
+                AI는 알아서 토스 미니앱 코드를 뽑아주지 않습니다. 먼저 <strong>여기가 토스 미니앱</strong>이라고 알려줘야 합니다.
+              </p>
+              <ul>
+                <li><code>granite.config.ts</code>는 앱의 이름표입니다.</li>
+                <li><code>src/main.tsx</code>는 TDS 와 앱 시작 설정이 모이는 곳입니다.</li>
+                <li>샌드박스는 “브라우저에서 멀쩡한데 앱에서는 깨지는 문제”를 잡아내는 곳입니다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>먼저 연결할 문서</h3>
+              <ul>
+                <li><code>llms.txt</code>: 핵심 기능 위주로 빠르게 연결할 때</li>
+                <li><code>llms-full.txt</code>: 전체 문맥과 예시까지 넓게 참고할 때</li>
+                <li>TDS WebView 문서: 버튼, 리스트, Asset, Navigation, BottomCTA 같은 UI 규칙을 맞출 때</li>
+                <li>MCP 또는 Apps in Toss Skills: 프로젝트 구조와 문서를 더 깊게 붙일 수 있을 때</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>도구별로 시작하는 법</h3>
+              <ul>
+                <li><strong>Cursor</strong>: Docs 인덱싱에 <code>llms.txt</code>, <code>llms-full.txt</code>, TDS 문서를 넣고 <code>@docs</code>를 적극 사용한다.</li>
+                <li><strong>Claude Code</strong>: Apps in Toss Skills 또는 MCP를 먼저 연결하고 필요하면 <code>claude mcp add --transport stdio apps-in-toss ax mcp start</code>를 사용한다.</li>
+                <li><strong>Codex</strong>: apps-in-toss-skills를 설치한 뒤 <code>docs-search</code>로 관련 문서를 먼저 찾게 한다.</li>
+                <li><strong>VS Code + Copilot</strong>: 워크스페이스에 가이드 파일, 설정 파일, 오류 로그를 같이 두고 파일 경로와 함께 질문한다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>좋은 답변의 신호</h3>
+              <ul>
+                <li>TDS 컴포넌트를 기준으로 레이아웃을 제안한다.</li>
+                <li><code>granite.config.ts</code>, <code>src/main.tsx</code>, 페이지 구조를 함께 설명한다.</li>
+                <li>샌드박스에서 다시 확인할 포인트를 따로 적어준다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>다시 시켜야 하는 답변</h3>
+              <ul>
+                <li>일반 모바일 앱 프레임워크 이야기나 모바일 웹 일반론만 길게 설명한다.</li>
+                <li>TDS 대신 임의의 디자인 시스템이나 CSS 프레임워크를 들고온다.</li>
+                <li>브라우저 미리보기만 보고 끝내라고 말한다.</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 4. 토스 미니앱 초기 스캐폴드 생성</h3>
+                <button class="copy-button" data-copy-target="prompt-4">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                앱인토스 문맥을 분명히 준 상태에서 초기 파일 구조와 설정 파일을 뽑을 때 사용합니다.
+              </p>
+              <pre id="prompt-4">너는 앱인토스 WebView 미니앱 개발자야.
+
+앱 이름은 "haengun-note"이고, 사용자에게는 "행운 노트"로 보여줄 거야.
+사용 도구는 Cursor, Claude Code, Codex, VS Code + Copilot 중 어느 것이든 상관없고,
+공식 <code>llms.txt</code>, <code>llms-full.txt</code>, TDS 문서를 먼저 참고한다고 가정해.
+Vite + React + TypeScript + @toss/tds-mobile 기반으로 초기 구조를 설계해줘.
+
+[반영 조건]
+1. granite.config.ts 예시를 작성할 것
+2. src/main.tsx 에 필요한 TDS 설정을 포함할 것
+3. 홈 화면, 저장 목록 화면, 공유 버튼이 있는 상세 화면 구조를 제안할 것
+4. 앱인토스 문서와 TDS 문서를 참고한다는 전제로 설명할 것
+5. 파일 구조를 트리 형태로 보여줄 것
+6. 초보자가 먼저 수정해야 할 파일 순서도 적을 것</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> Cursor, Claude Code, Codex, Copilot Chat 중 지금 쓰는 도구에 그대로 넣으면 됩니다.</p>
+                <p><strong>정상 결과</strong> 파일 트리와 설정 파일 역할, 수정 순서가 함께 제시됩니다.</p>
+                <p><strong>이상 신호</strong> TDS 설정 없이 페이지 코드만 나오면 토스 미니앱 문맥이 빠진 답변입니다.</p>
+                <p><strong>재프롬프트</strong> “앱인토스 WebView 와 TDS 셋업을 빼먹지 말고 다시 작성해줘.”</p>
+              </div>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 5. TDS 홈 화면 생성</h3>
+                <button class="copy-button" data-copy-target="prompt-5">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                첫 화면과 샌드박스 테스트 포인트를 함께 설계할 때 사용합니다.
+              </p>
+              <pre id="prompt-5">너는 앱인토스 WebView 미니앱 프론트엔드 개발자야.
+
+가상의 앱 "행운 노트"의 홈 화면을 설계해줘.
+
+[요구 사항]
+1. 오늘의 운세 카드 1장 노출
+2. 저장된 카드 보러 가기 버튼
+3. 보너스 카드 열기 버튼
+4. 최근 저장한 문장 3개 미리보기
+5. @toss/tds-mobile 기반 컴포넌트 사용
+
+[출력 조건]
+1. 화면 구조 설명
+2. React 컴포넌트 예시
+3. 어떤 TDS 컴포넌트를 왜 썼는지 설명
+4. 샌드박스에서 확인해야 할 포인트 5개
+5. 브라우저에서 보이더라도 실기기에서 다시 봐야 할 포인트 3개</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 홈 화면 골격을 만들기 직전에 사용합니다.</p>
+                <p><strong>정상 결과</strong> TDS 컴포넌트 선택 이유와 샌드박스 검증 포인트가 함께 나옵니다.</p>
+                <p><strong>이상 신호</strong> CSS 프레임워크 위주로 답하거나 샌드박스 언급이 없으면 다시 시켜야 합니다.</p>
+                <p><strong>재프롬프트</strong> “토스 미니앱 샌드박스 검증 포인트까지 포함해서 다시 정리해줘.”</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-6">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 06</div>
+              <h2>Firebase, 광고, 공유, 분석은 같이 봅니다</h2>
+            </div>
+            <p>
+              광고만 붙인다고 수익화가 되진 않습니다. 저장, 공유, 광고, 분석이 함께 돌아가야 뭐가 먹히는지 보입니다.
+            </p>
+            <p>
+              이 장은 기능을 따로 설명하지 않습니다. 실제 운영에서 어떻게 연결되는지 봅니다.
+            </p>
+
+            <div class="easy-note">
+              <h3>쉬운 설명</h3>
+              <p>
+                이 장의 핵심은 “붙이기”가 아니라 “이어보기”입니다.
+              </p>
+              <ul>
+                <li>Firebase: 사용자 행동과 상태를 저장한다.</li>
+                <li>광고: 왜 보고, 보고 나서 무엇을 받는지 설계한다.</li>
+                <li>공유: 눌러보게 만드는 첫 인상을 만든다.</li>
+                <li>분석: 무엇이 재방문과 수익으로 이어지는지 확인한다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>먼저 지킬 기본</h3>
+              <ul>
+                <li>Firebase 설정값은 <code>.env.local</code> 로 분리한다.</li>
+                <li>초기화는 <code>src/firebase/init.ts</code> 한 곳에서만 관리한다.</li>
+                <li>읽기 실패, 지연, 규칙 오류에 대한 fallback UX 를 준비한다.</li>
+                <li>저장 성공과 실패를 사용자 메시지와 로그 양쪽에서 확인한다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>놓치기 쉬운 설정</h3>
+              <ul>
+                <li>Firebase 환경 파일은 Git에 올리지 않고 <code>.gitignore</code> 에서 제외한다.</li>
+                <li>Firestore 와 Storage 는 기본 공개 상태를 믿지 말고 규칙을 직접 잠근다.</li>
+                <li>허용 도메인은 <code>https://*.apps.tossmini.com</code>, <code>https://*.private-apps.tossmini.com</code> 같은 실제 미니앱 도메인 기준으로 제한한다.</li>
+                <li>모바일 WebView 환경에서는 서드파티 쿠키 제약이 있을 수 있으므로 파트너사 도메인의 쿠키 로그인에 기대지 말고 토큰 기반 인증을 검토한다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>광고와 OG 기본</h3>
+              <ul>
+                <li>광고는 <code>load</code> 와 <code>show</code> 를 나눠 본다.</li>
+                <li><code>requested</code> 이벤트는 광고 요청이 전달됐다는 뜻으로 이해한다.</li>
+                <li>보상 지급 시점은 광고 요청이 아니라 실제 완료 조건과 분리해 관리한다.</li>
+                <li>OG 이미지는 1200 × 600 고화질 기준으로 제작한다.</li>
+                <li>OG 에는 과도한 텍스트, 비속어, 정치적 표현, 자극적인 문구를 넣지 않는다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>처음부터 볼 지표</h3>
+              <ul>
+                <li>첫 방문 후 첫 카드 열람 전환율</li>
+                <li>저장 기능 사용률</li>
+                <li>광고 요청 대비 준비 완료율</li>
+                <li>광고 준비 완료 대비 시청 완료율</li>
+                <li>공유 버튼 클릭률과 공유 후 유입률</li>
+                <li>다음 날 재방문율(D1)</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 6. Firebase 초기화와 컬렉션 설계</h3>
+                <button class="copy-button" data-copy-target="prompt-6">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                Firebase init, 컬렉션 구조, 보안 포인트, 실패 처리 기준을 한 번에 잡을 때 사용합니다.
+              </p>
+              <pre id="prompt-6">너는 Vite + React + TypeScript 기반 토스 미니앱 개발자야.
+
+가상의 앱 "행운 노트"에 Firebase Firestore 를 붙이려고 해.
+
+[원하는 저장 데이터]
+1. userProfiles
+2. savedFortunes
+3. dailyOpenHistory
+
+[출력 조건]
+1. .env 예시 키 목록
+2. src/firebase/init.ts 예시
+3. Firestore 컬렉션 구조 제안
+4. 저장 함수 예시
+5. 실수하기 쉬운 보안 포인트 5개
+6. 읽기 실패 시 fallback UX 예시 3개
+7. .gitignore 와 허용 도메인 제한 포인트</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> Firebase 프로젝트를 만든 직후 사용하면 좋습니다.</p>
+                <p><strong>정상 결과</strong> env 키, init 코드, 컬렉션, 실패 대응이 한 번에 정리됩니다.</p>
+                <p><strong>이상 신호</strong> 설정값을 코드에 하드코딩하거나 보안 규칙 이야기가 빠지면 위험한 답변입니다.</p>
+                <p><strong>재프롬프트</strong> “환경 변수 분리와 보안 규칙 주의사항까지 포함해서 다시 써줘.”</p>
+              </div>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 7. 보상형 광고 버튼 생성</h3>
+                <button class="copy-button" data-copy-target="prompt-7">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                광고 load 와 show 를 분리하고 실패 흐름까지 포함한 보상형 UI를 설계할 때 사용합니다.
+              </p>
+              <pre id="prompt-7">너는 앱인토스 WebView 미니앱 개발자야.
+
+가상의 앱 "행운 노트"에서 보너스 운세 카드를 열기 전에 광고를 보여주고 싶어.
+광고는 미리 로드하고, 사용자가 버튼을 누르면 보여주는 방식이야.
+
+[출력 조건]
+1. 광고 로드 함수
+2. 광고 보여주기 함수
+3. loaded / requested / impression / dismissed / failedToShow 처리
+4. React 컴포넌트 예시
+5. 사용자에게 보여줄 안내 문구 3개
+6. 광고 실패 시 대체 UX 3개
+7. requested 이벤트와 실제 보상 지급 시점을 어떻게 구분해야 하는지도 설명</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 광고 그룹 ID 와 버튼 흐름을 붙이기 직전에 사용합니다.</p>
+                <p><strong>정상 결과</strong> 광고 준비, 노출, 실패 처리, 보상 지급 조건이 구분됩니다.</p>
+                <p><strong>이상 신호</strong> 광고를 버튼 클릭 즉시 무조건 띄우거나 실패 UX 가 없으면 품질이 낮습니다.</p>
+                <p><strong>재프롬프트</strong> “load 와 show 를 분리하고 실패 시 대체 UX 도 넣어 다시 작성해줘.”</p>
+              </div>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 8. OG 이미지와 공유 문구 생성</h3>
+                <button class="copy-button" data-copy-target="prompt-8">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                링크 클릭률을 높이는 썸네일 구조와 공유 문구를 정리할 때 사용합니다.
+              </p>
+              <pre id="prompt-8">너는 토스 미니앱 마케팅 디자이너이자 카피라이터야.
+
+가상의 미니앱 "행운 노트"의 공유용 OG 이미지를 기획해줘.
+
+[브랜드 정보]
+- 앱 이름: 행운 노트
+- 톤: 차분하고 믿을 수 있는 운세 기록 앱
+- 공유 상황: 오늘의 운세 결과를 친구에게 공유
+
+[출력 조건]
+1. 1200x600 기준 이미지 구성안 3개
+2. 메인 카피 5개
+3. 서브카피 5개
+4. 이미지에 넣으면 안 되는 요소 5개
+5. 카카오톡 공유 카드에서 잘 보이게 만드는 팁 5개
+6. 클릭을 높이는 공유 문구 5개
+7. 과도한 텍스트 금지와 민감 표현 금지 기준도 함께 정리</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 공유 기능을 붙이기 전에 카피와 썸네일 방향을 먼저 정할 때 씁니다.</p>
+                <p><strong>정상 결과</strong> 이미지 구성, 카피, 피해야 할 요소, 클릭 팁이 함께 제안됩니다.</p>
+                <p><strong>이상 신호</strong> 단순 예쁜 문구만 있고 공유 상황 맥락이 없으면 실전성이 떨어집니다.</p>
+                <p><strong>재프롬프트</strong> “친구에게 실제로 보내고 싶어지는 공유 상황 중심으로 다시 제안해줘.”</p>
+              </div>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 9. 핵심 지표와 이벤트 설계</h3>
+                <button class="copy-button" data-copy-target="prompt-9">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                광고, 저장, 공유, 재방문이 실제로 먹히는지 판단하는 최소 분석 구조를 만들 때 사용합니다.
+              </p>
+              <pre id="prompt-9">너는 토스 미니앱 데이터 분석 리드야.
+
+가상의 앱 "행운 노트"의 핵심 지표와 이벤트를 설계해줘.
+
+[핵심 기능]
+1. 오늘의 운세 카드 열기
+2. 저장 기능
+3. 공유 링크
+4. 보상형 광고
+5. Firebase 읽기/쓰기
+
+[출력 조건]
+1. 꼭 추적해야 할 이벤트 이름 10개
+2. 이벤트별 속성(property) 제안
+3. 첫 주에 볼 대시보드 5개
+4. 광고 성과를 볼 때 중요한 비율 5개
+5. 실패 알림을 걸어야 할 운영 지표 5개</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 기능이 어느 정도 붙은 다음, QA 전에 사용하면 좋습니다.</p>
+                <p><strong>정상 결과</strong> 이벤트 이름, 속성, 대시보드, 경고 지표가 같이 나옵니다.</p>
+                <p><strong>이상 신호</strong> PV, UV 같은 일반 웹 지표만 있고 광고/재방문 지표가 없으면 부족합니다.</p>
+                <p><strong>재프롬프트</strong> “광고, 저장, 공유, 재방문 중심으로 실전 지표만 다시 정리해줘.”</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-7">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 07</div>
+              <h2>앱테크는 보상 구조가 전부입니다</h2>
+            </div>
+            <p>
+              앱테크는 사용자가 <strong>지금 무엇을 하면 무엇을 얻는지</strong> 바로 이해할 때 힘이 생깁니다.
+              출석, 미션, 광고 보상, 공유 보상은 모두 이 원칙 안에서 움직여야 합니다.
+            </p>
+            <p>
+              중요한 건 버튼이 아니라 보상 구조입니다. 어디까지는 화면에서 처리하고, 어디부터는 서버로 검증할지 미리 나눠야 합니다.
+              특히 토스 포인트나 프로모션처럼 실제 보상이 걸린 기능은 <strong>서버끼리 안전하게 통신하는 mTLS</strong>가 필요합니다.
+            </p>
+
+            <div class="easy-note">
+              <h3>쉬운 설명</h3>
+              <p>
+                앱테크는 <strong>간단한 행동, 바로 느껴지는 보상, 다시 오게 만드는 이유</strong>의 조합입니다.
+              </p>
+              <p>
+                초보자는 광고 버튼부터 떠올리기 쉽습니다. 실제로 더 중요한 건 보상을 어떤 순서로 주는지, 어디서 검증하는지입니다.
+              </p>
+            </div>
+
+            <div class="quote-card">
+              <h3>가이드 핵심</h3>
+              <blockquote>
+                토스 로그인, 프로모션, 기능성 푸시, 인앱결제처럼 신뢰와 보상이 직접 걸린 기능은 <strong>mTLS 기반 서버 간 통신</strong>이 필요합니다.
+              </blockquote>
+              <cite>앱인토스 API 사용하기 가이드 핵심 정리</cite>
+            </div>
+
+            <div class="checklist">
+              <h3>잘 되는 앱테크 루프</h3>
+              <ul>
+                <li>첫 10초 안에 보상이 무엇인지 이해된다.</li>
+                <li>핵심 행동은 한 화면에서 끝난다.</li>
+                <li>기본 보상과 광고 보너스 보상이 분리돼 있다.</li>
+                <li>연속 출석, 누적 미션, 시간 제한 보너스로 다음 방문 이유를 만든다.</li>
+                <li>공유나 친구 초대는 억지가 아니라 보상 구조와 연결된다.</li>
+                <li>이상 행동 탐지와 지급 로그가 남는다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>화면에서 끝나는 일, 서버가 필요한 일</h3>
+              <ul>
+                <li><strong>화면에서 끝낼 수 있는 일</strong>: 출석 화면, 미션 진행률, 광고 버튼, 공유 유도, 로컬 보상 시뮬레이션</li>
+                <li><strong>서버가 필요한 일</strong>: 실제 포인트 지급, 추천인 정산, 보상 중복 차단, 운영용 이벤트 집계, 기능성 푸시</li>
+                <li><strong>꼭 확인할 것</strong>: 토스 포인트 프로모션, 로그인, 인앱결제, 서버 연동 기능은 프론트만으로 끝나지 않습니다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>망하기 쉬운 패턴</h3>
+              <ul>
+                <li>보상은 큰데 재방문 이유가 약하다.</li>
+                <li>광고를 먼저 강요해서 첫 경험이 나빠진다.</li>
+                <li>서버 검증 없이 보상을 지급해 악용이 쉬워진다.</li>
+                <li>획득 비용과 지급 비용을 계산하지 않는다.</li>
+                <li>정책과 검수 리스크를 무시한다.</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 10. 앱테크 끝판왕 루프 설계</h3>
+                <button class="copy-button" data-copy-target="prompt-10">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                행운 노트를 앱테크형 미니앱으로 확장하고, 어디부터 서버와 mTLS가 필요한지까지 구분할 때 사용합니다.
+              </p>
+              <pre id="prompt-10">너는 토스 미니앱 PM이자 앱테크 수익화 설계자야.
+
+가상의 앱 "행운 노트"를 앱테크형 미니앱으로 확장하고 싶어.
+사용자는 매일 카드 1장을 열고, 간단한 행동 미션을 수행하고, 광고를 보면 보너스를 받고, 친구에게 공유할 수 있어.
+장기적으로는 프로모션이나 토스 포인트 지급도 검토하고 있어.
+
+[출력 조건]
+1. 첫 1분 사용자 경험 설계
+2. 일간 리워드 루프 설계
+3. 광고 보상, 공유 미션, 연속 출석을 어떻게 연결할지
+4. 첫 출시에서 프론트만으로 가능한 범위
+5. 서버가 반드시 필요한 범위
+6. mTLS 가 필요한 기능과 이유
+7. 남용 방지 장치 5개
+8. 핵심 지표 7개
+9. 가장 위험한 운영 리스크 5개</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 광고형 MVP 다음 단계로 앱테크 확장을 고민할 때 사용합니다.</p>
+                <p><strong>정상 결과</strong> 프론트 범위와 서버 범위, mTLS 필요 기능, 리스크가 구분되어 나옵니다.</p>
+                <p><strong>이상 신호</strong> 토스 포인트 지급을 프론트 코드만으로 끝낼 수 있다고 답하면 잘못된 설계입니다.</p>
+                <p><strong>재프롬프트</strong> “프로모션/토스 포인트는 mTLS 서버 연동이 필요하다는 전제를 반영해서 다시 설계해줘.”</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="chapter" id="chapter-8">
+            <div class="chapter-header">
+              <div class="chapter-number">Chapter 08</div>
+              <h2>출시 전에는 검증을 먼저 합니다</h2>
+            </div>
+            <p>
+              화면이 보이는 건 시작입니다. 브라우저, 샌드박스 앱, 실제 토스 앱 WebView에서 다시 봐야 합니다.
+            </p>
+            <p>
+              배포 전에는 로그와 설정까지 같이 봐야 합니다. 그래야 오류가 나도 빨리 고칠 수 있습니다.
+            </p>
+
+            <div class="checklist">
+              <h3>출시 전 꼭 볼 것</h3>
+              <ul>
+                <li>브라우저, 샌드박스 앱, 실제 토스 앱 WebView 에서 핵심 흐름을 각각 확인했는가</li>
+                <li>TDS 컴포넌트, 상단·하단 여백, 버튼, 바텀시트가 실제 기기에서 깨지지 않는가</li>
+                <li>Firebase 읽기/쓰기가 규칙과 함께 정상 동작하는가</li>
+                <li>광고 로드 실패, 공유 실패, 네트워크 오류 시 대체 UX 가 있는가</li>
+                <li>이벤트 로그가 실제로 남고 있는가</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>웹 미니앱에서 자주 놓치는 것</h3>
+              <ul>
+                <li>브라우저에서 보이는 화면과 샌드박스 앱 WebView 화면을 별도로 확인한다.</li>
+                <li>샌드박스 앱에서 실행 스킴, 서버 주소, 현재 띄운 개발 서버가 서로 맞는지 본다.</li>
+                <li>서버에 연결할 수 없으면 <code>granite.config.ts</code> 개발 명령에 <code>--host</code> 옵션이 필요한지 본다.</li>
+                <li>공유, 광고, 로그인처럼 WebView 문맥이 중요한 기능은 실제 토스 앱 WebView 에서 다시 확인한다.</li>
+                <li>브라우저에서만 검증하고 끝내지 말고, 샌드박스 앱과 실제 WebView 결과를 최종 기준으로 삼는다.</li>
+              </ul>
+            </div>
+
+            <div class="checklist">
+              <h3>초보자가 자주 막히는 문제</h3>
+              <ul>
+                <li>브라우저에서는 되는데 샌드박스에서 화면이 깨진다.</li>
+                <li><code>.env.local</code> 키가 누락되어 Firebase 가 초기화되지 않는다.</li>
+                <li><code>granite.config.ts</code> 의 앱 이름과 실행 스킴이 맞지 않는다.</li>
+                <li>샌드박스 앱의 서버 주소, 개발 서버 host, 실행 포트를 놓친다.</li>
+                <li>Firestore 규칙 때문에 읽기나 쓰기가 막힌다.</li>
+                <li>광고 그룹 설정은 했지만 실제 노출 실패 처리를 안 넣었다.</li>
+                <li>OG 이미지는 만들었지만 크기나 카피가 공유 카드에서 약하다.</li>
+                <li>AI가 일반 모바일 웹 코드를 줬는데 그대로 붙여넣었다.</li>
+                <li>로그를 남기지 않아 어디서 실패했는지 모른다.</li>
+                <li>배포 후 env 나 서버 함수 설정을 다시 확인하지 않았다.</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 11. 최종 QA·배포·장애 대응 매트릭스</h3>
+                <button class="copy-button" data-copy-target="prompt-11">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                기능별 검증 항목, 실패 시 우선 점검 포인트, 운영 로그를 표로 만들 때 사용합니다.
+              </p>
+              <pre id="prompt-11">너는 토스 미니앱 QA 리드이자 운영 담당자야.
+
+가상의 앱 "행운 노트"의 출시 전 점검표와 장애 대응표를 만들어줘.
+
+[핵심 기능]
+1. 오늘의 운세 카드 열기
+2. 저장 기능
+3. 공유 링크
+4. 보상형 광고
+5. Firebase 읽기/쓰기
+
+[출력 조건]
+1. 브라우저 / 샌드박스 앱 / 실제 토스 앱 WebView 로 구분할 것
+2. 기능별 확인 항목을 표 형태로 정리할 것
+3. 실패 시 가장 먼저 볼 로그나 설정을 함께 적을 것
+4. 출시 전 필수 체크 10개를 마지막에 따로 정리할 것
+5. 운영 중 이상 징후를 의심해야 할 상황 5개를 추가할 것</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 출시 직전 마지막 점검 단계에서 사용합니다.</p>
+                <p><strong>정상 결과</strong> 검증 항목과 실패 시 점검 포인트가 연결된 표가 나옵니다.</p>
+                <p><strong>이상 신호</strong> 테스트 항목만 있고 로그나 설정 확인 포인트가 없으면 실전성이 떨어집니다.</p>
+                <p><strong>재프롬프트</strong> “실패 시 가장 먼저 볼 로그와 파일 위치까지 포함해서 다시 정리해줘.”</p>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="cta-box">
+              <h3>구매자 보너스 번들 구성</h3>
+              <ol>
+                <li>복붙용 프롬프트 12종</li>
+                <li>초보자용 작업환경 점검표</li>
+                <li>수익화 구조 3종 아이디어 시트</li>
+                <li>앱테크 필살기 설계 시트</li>
+                <li>광고·공유·분석 최소 지표 체크리스트</li>
+                <li>QA·배포·장애 대응 매트릭스</li>
+              </ol>
+            </div>
+          </section>
+
+          <section class="chapter" id="appendix">
+            <div class="chapter-header">
+              <div class="chapter-number">Appendix</div>
+              <h2>FAQ와 판매 페이지용 보너스 프롬프트</h2>
+            </div>
+            <p>
+              구매를 고민하는 사람은 기술만 보지 않습니다. 나도 할 수 있는지, 얼마나 걸리는지, 어디서 막히는지가 같이 보여야 합니다.
+            </p>
+
+            <div class="easy-note">
+              <h3>자주 묻는 질문</h3>
+              <p><strong>Q. 진짜 비개발자도 가능한가?</strong><br />A. 가능합니다. 다만 복붙하고, 실행하고, 로그를 보는 반복은 필요합니다.</p>
+              <p><strong>Q. 맥이 없어도 가능한가?</strong><br />A. 가능합니다. 브라우저, Firebase, 샌드박스 앱, 웹 미니앱 개발·배포 흐름은 Windows 환경에서도 충분히 진행할 수 있습니다.</p>
+              <p><strong>Q. 어떤 AI 도구를 써야 하나?</strong><br />A. 도구보다 문서를 어떻게 붙이고, 로그를 어떻게 보여주느냐가 더 중요합니다.</p>
+              <p><strong>Q. 이 책만 보면 바로 수익이 나나?</strong><br />A. 아닙니다. 이 책은 수익을 약속하지 않습니다. 대신 수익화 가능성을 검증할 수 있는 구조를 직접 만들게 돕습니다.</p>
+              <p><strong>Q. 토스 포인트나 프로모션 지급은 화면만으로 가능한가?</strong><br />A. 아닙니다. 실제 지급이 걸린 기능은 서버와 mTLS 연동이 필요합니다.</p>
+              <p><strong>Q. WebView 환경에서 쿠키 로그인 방식을 그대로 써도 되나?</strong><br />A. 조심해야 합니다. 모바일 WebView에서는 쿠키 제약이 있을 수 있어 토큰 기반 방식이 더 안전할 수 있습니다.</p>
+              <p><strong>Q. 공식 문서만 읽으면 안 되나?</strong><br />A. 공식 문서는 꼭 필요합니다. 다만 실행 순서와 예외 처리까지 대신 정리해주진 않습니다.</p>
+              <p><strong>Q. 막히면 어디부터 봐야 하나?</strong><br />A. 로그, 환경 변수, 앱 설정, 샌드박스 테스트 순서로 보면 대부분 방향이 잡힙니다.</p>
+            </div>
+
+            <div class="checklist">
+              <h3>이 전자책을 가장 잘 활용하는 순서</h3>
+              <ul>
+                <li>먼저 프롬프트 2 로 준비물과 일정표를 만든다.</li>
+                <li>프롬프트 1 과 3 으로 앱 구조와 수익화 범위를 줄인다.</li>
+                <li>프롬프트 4 와 5 로 초기 구조와 첫 화면을 만든다.</li>
+                <li>프롬프트 6~9 로 저장, 광고, 공유, 지표를 붙인다.</li>
+                <li>프롬프트 10 으로 앱테크 확장 여부와 서버 범위를 정한다.</li>
+                <li>프롬프트 11 로 QA 와 출시 전 점검을 끝낸다.</li>
+              </ul>
+            </div>
+
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <h3 class="prompt-title">프롬프트 12. 상세페이지와 README 문구 생성</h3>
+                <button class="copy-button" data-copy-target="prompt-12">프롬프트 복사</button>
+              </div>
+              <p class="prompt-description">
+                전자책 상세페이지 소개 문구, 프로젝트 README, FAQ 카피를 판매용 톤으로 정리할 때 사용합니다.
+              </p>
+              <pre id="prompt-12">너는 토스 미니앱 프로젝트를 소개하는 기술 카피라이터이자 마케터야.
+
+비개발자와 1인 창업가를 대상으로 한 전자책 "코딩 몰라도 AI로 완성하는 토스 미니앱 수익화 실전 가이드"를 소개하려고 해.
+
+[출력 형식]
+1. 상세페이지용 헤드라인 5개
+2. 서브카피 5개
+3. 구매 전 FAQ 7개
+4. README 첫 문단 3개
+5. "이 책으로 배우는 것" 목록 7개
+6. 과장 없이 신뢰를 주는 판매 문구 5개</pre>
+              <div class="execution-note">
+                <p><strong>붙여넣을 위치</strong> 판매 페이지, 상세 설명, README 를 다듬을 때 사용합니다.</p>
+                <p><strong>정상 결과</strong> 과장 없는 판매 카피와 FAQ, README 문구가 한 번에 정리됩니다.</p>
+                <p><strong>이상 신호</strong> “쉽게 돈 번다” 같은 표현이 많으면 신뢰도가 떨어집니다.</p>
+                <p><strong>재프롬프트</strong> “수익 보장 표현은 빼고, 실전성과 신뢰를 중심으로 다시 써줘.”</p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="sidebar">
+          <div class="sidebar-card">
+            <h2>목차</h2>
+            <nav class="toc">
+              <a href="#chapter-0">0부. 미니앱 수익화 인증</a>
+              <a href="#chapter-1">이 책의 독자와 결과</a>
+              <a href="#chapter-2">왜 이 책이 필요한가</a>
+              <a href="#chapter-3">0단계 준비물</a>
+              <a href="#chapter-4">돈 되는 MVP 설계</a>
+              <a href="#chapter-5">AI 도구 공통 문맥 연결</a>
+              <a href="#chapter-6">Firebase · 광고 · 공유 · 분석</a>
+              <a href="#chapter-7">앱테크 필살기</a>
+              <a href="#chapter-8">QA · 배포 · 장애 대응</a>
+              <a href="#appendix">FAQ와 보너스</a>
+            </nav>
+          </div>
+        </aside>
+      </div>
+
+      <p class="footer-note">
+        이 전자책은 공식 문서를 대신 읽어주는 요약본이 아니라, 실제 제작 흐름을 따라가며 끝까지 만들어보는 실전판입니다.
+      </p>
+    </div>
+
+        <script>
+      // Scroll Progress Bar
+      window.addEventListener("scroll", () => {
+        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progressBar = document.getElementById("scroll-progress");
+        if (progressBar) {
+          progressBar.style.width = scrolled + "%";
+        }
+      });
+
+      // SVG Icons for copy buttons
+      const copySvg = `<svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+      const successSvg = `<svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+      const errorSvg = `<svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+
+      // Initialize copy buttons
+      document.querySelectorAll(".copy-button").forEach((button) => {
+        const text = button.textContent;
+        button.innerHTML = copySvg + `<span>${text}</span>`;
+      });
+
+      // Handle copy logic
+      async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+
+        const helper = document.createElement("textarea");
+        helper.value = text;
+        helper.setAttribute("readonly", "");
+        helper.style.position = "absolute";
+        helper.style.left = "-9999px";
+        document.body.appendChild(helper);
+        helper.select();
+        document.execCommand("copy");
+        document.body.removeChild(helper);
+      }
+
+      document.querySelectorAll("[data-copy-target]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const targetId = button.getAttribute("data-copy-target");
+          const target = document.getElementById(targetId);
+          if (!target) return;
+
+          const originalText = button.querySelector("span").textContent;
+
+          try {
+            await copyText(target.innerText.trim());
+            button.innerHTML = successSvg + "<span>복사 완료</span>";
+            button.classList.add("copied");
+          } catch (error) {
+            console.error("Failed to copy prompt:", error);
+            button.innerHTML = errorSvg + "<span>복사 실패</span>";
+            button.classList.add("copy-failed");
+          }
+
+          window.setTimeout(() => {
+            button.innerHTML = copySvg + `<span>${originalText}</span>`;
+            button.classList.remove("copied", "copy-failed");
+          }, 1500);
+        });
+      });
+
+      // Contextual styling for checklist boxes
+      document.querySelectorAll(".checklist").forEach((card) => {
+        const heading = card.querySelector("h3");
+        if (!heading) return;
+        const text = heading.textContent;
+        
+        if (text.includes("잘 맞는")) {
+          card.classList.add("checklist-fit");
+        } else if (text.includes("잘 안 맞는") || text.includes("망하기 쉬운")) {
+          card.classList.add("checklist-unfit");
+        } else if (text.includes("막히는") || text.includes("놓치기 쉬운") || text.includes("막히면") || text.includes("장애")) {
+          card.classList.add("checklist-warning");
+        } else if (text.includes("준비물") || text.includes("공통으로 필요한")) {
+          card.classList.add("checklist-prepare");
+        } else if (text.includes("일정표")) {
+          card.classList.add("checklist-schedule");
+        } else if (text.includes("MVP 범위")) {
+          card.classList.add("checklist-scope");
+        } else if (text.includes("수익화 모델")) {
+          card.classList.add("checklist-monetize");
+        } else if (text.includes("연결할 문서")) {
+          card.classList.add("checklist-doc");
+        } else if (text.includes("도구별로")) {
+          card.classList.add("checklist-tool");
+        } else if (text.includes("좋은 답변")) {
+          card.classList.add("checklist-fit");
+        } else if (text.includes("다시 시켜야")) {
+          card.classList.add("checklist-unfit");
+        } else if (text.includes("지표")) {
+          card.classList.add("checklist-metric");
+        } else if (text.includes("루프")) {
+          card.classList.add("checklist-loop");
+        } else if (text.includes("일")) {
+          card.classList.add("checklist-split");
+        } else if (text.includes("순서")) {
+          card.classList.add("checklist-step");
+        } else {
+          card.classList.add("checklist-check");
+        }
+      });
+
+      // Contextual badges inside execution notes
+      document.querySelectorAll(".execution-note p strong").forEach((el) => {
+        const text = el.textContent.trim();
+        const span = document.createElement("span");
+        span.textContent = text;
+        
+        if (text.includes("붙여넣을 위치")) {
+          span.className = "badge badge-pos";
+        } else if (text.includes("정상 결과")) {
+          span.className = "badge badge-success";
+        } else if (text.includes("이상 신호")) {
+          span.className = "badge badge-danger";
+        } else if (text.includes("재프롬프트")) {
+          span.className = "badge badge-reprompt";
+        } else {
+          return;
+        }
+        
+        el.replaceWith(span);
+      });
+
+      // Scrollspy logic for Table of Contents
+      const chapters = document.querySelectorAll(".chapter, #appendix");
+      const tocLinks = document.querySelectorAll(".toc a");
+
+      const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("id");
+            tocLinks.forEach((link) => {
+              if (link.getAttribute("href") === `#${id}`) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      chapters.forEach((chapter) => {
+        observer.observe(chapter);
+      });
+
+      // Fallback for reaching the bottom of the page
+      window.addEventListener("scroll", () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+          tocLinks.forEach((link) => link.classList.remove("active"));
+          const lastLink = tocLinks[tocLinks.length - 1];
+          if (lastLink) lastLink.classList.add("active");
+        }
+      });
+    </script>
+  </body>
+</html>

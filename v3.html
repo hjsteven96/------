@@ -1,0 +1,1468 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>코딩 몰라도 AI로 완성하는 토스 미니앱 수익화 실전 가이드</title>
+  <meta name="description"
+    content="비개발자도 Cursor, Claude 등 AI 코딩 도구 하나로 토스 미니앱 MVP를 런칭하고 수익화하는 실전 가이드. TDS부터 광고 연동, 배포까지 딱 7일이면 충분합니다." />
+  <style>
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+    :root {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #fcfdfe;
+
+      --brand-primary: #3182f6;
+      --brand-primary-light: #e8f3ff;
+      --brand-primary-dark: #1b64da;
+
+      --text-primary: #000000;
+      --text-secondary: #111111;
+      --text-tertiary: #3c424b;
+      --text-muted: #5a606a;
+
+      --border-color: #e5e8eb;
+      --border-color-strong: #d1d6db;
+
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.06);
+
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+
+      --max-width: 1200px;
+      --content-width: 800px;
+
+      --note-bg: #f8fafc;
+      --note-border: #e5e8eb;
+      --note-left-border: #64748b;
+      --note-text: #111111;
+
+      --cta-bg: #f2f7ff;
+      --cta-border: #dbeafe;
+      --cta-text: #1e3a8a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-primary);
+      font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: var(--radius-sm);
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+      font-size: 0.9em;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: linear-gradient(90deg, #3182f6, #60a5fa);
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
+    .page-shell {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin: 0 auto;
+      padding: 40px 0 100px;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 60px 48px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(49, 130, 246, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      background: var(--brand-primary-light);
+      color: var(--brand-primary);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 4vw, 46px);
+      line-height: 1.25;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .hero p strong {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      background: #f8fafc;
+      border-left: 4px solid var(--brand-primary);
+      font-size: 15px;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .notice strong {
+      color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    .hero-meta {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .meta-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .meta-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      margin-top: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, var(--content-width)) 280px;
+      gap: 40px;
+      align-items: start;
+      margin-top: 20px;
+    }
+
+    .content {
+      display: grid;
+      gap: 40px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 40px;
+    }
+
+    .sidebar-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar h2 {
+      margin-bottom: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .toc {
+      display: grid;
+      gap: 6px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .toc a:hover {
+      background: #f1f5f9;
+      color: var(--brand-primary);
+      padding-left: 16px;
+    }
+
+    .toc a.active {
+      background: var(--brand-primary-light);
+      color: var(--brand-primary);
+      font-weight: 700;
+      padding-left: 16px;
+    }
+
+    .chapter {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .chapter:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .chapter-header {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .chapter-number {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      background: var(--brand-primary-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      width: max-content;
+    }
+
+    .chapter h2 {
+      font-size: clamp(24px, 3.5vw, 30px);
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .chapter p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-top: 16px;
+    }
+
+    .chapter p strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(49, 130, 246, 0.08) 70%);
+      padding: 0 2px;
+    }
+
+    .chapter ul,
+    .chapter ol {
+      margin-top: 16px;
+      padding-left: 24px;
+      color: var(--text-secondary);
+    }
+
+    .chapter li {
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .chapter strong {
+      font-weight: 700;
+    }
+
+    .image-placeholder {
+      margin: 24px 0;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .image-placeholder-title {
+      margin-bottom: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .image-placeholder p {
+      color: var(--text-tertiary);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .prompt-card {
+      margin-top: 32px;
+      border-radius: var(--radius-md);
+      border: 1px solid #334155;
+      background: #0f172a;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+    }
+
+    .prompt-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .copy-button {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #475569;
+      background: #334155;
+      color: #f1f5f9;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-button:hover {
+      background: #475569;
+      border-color: #64748b;
+      color: #ffffff;
+    }
+
+    .copy-button svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .prompt-card .prompt-description {
+      padding: 16px 20px 0;
+      margin: 0;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 6px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 90px;
+      text-align: center;
+    }
+
+    .badge-pos {
+      background-color: #e8f3ff;
+      color: #3182f6;
+    }
+
+    .badge-success {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .badge-danger {
+      background-color: #f1f5f9;
+      color: #475569;
+    }
+
+    .badge-reprompt {
+      background-color: #f1f5f9;
+      color: #3182f6;
+      border: 1px solid rgba(49, 130, 246, 0.2);
+    }
+
+    pre {
+      margin: 16px 20px;
+      padding: 16px;
+      border-radius: 8px;
+      background: #020617;
+      border: 1px solid #1e293b;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+      font-size: 13.5px;
+      line-height: 1.7;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .checklist,
+    .easy-note,
+    .quote-card,
+    .cta-box {
+      padding: 24px;
+    }
+
+    .checklist h3,
+    .easy-note h3,
+    .quote-card h3,
+    .cta-box h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .checklist {
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+    }
+
+    .checklist h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .checklist ul {
+      list-style: none !important;
+      padding-left: 0 !important;
+      display: grid;
+      gap: 12px;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 28px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .checklist li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    .checklist li::before,
+    .checklist.checklist-check li::before,
+    .checklist.checklist-prepare li::before,
+    .checklist.checklist-doc li::before,
+    .checklist.checklist-tool li::before,
+    .checklist.checklist-loop li::before,
+    .checklist.checklist-split li::before,
+    .checklist.checklist-step li::before,
+    .checklist.checklist-scope li::before,
+    .checklist.checklist-monetize li::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    .checklist.checklist-fit li::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233182f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' %3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    .checklist.checklist-fit {
+      border-left: 4px solid var(--brand-primary);
+      background: #ffffff;
+    }
+
+    .checklist.checklist-unfit li::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23df2222' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' %3E%3Cline x1='18' y1='6' x2='6' y2='18' %3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18' %3E%3C/line%3E%3C/svg%3E");
+    }
+
+    .checklist.checklist-unfit {
+      border-left: 4px solid #df2222;
+      background: #fff5f5;
+    }
+
+    .checklist.checklist-unfit h3 {
+      color: #df2222;
+    }
+
+    .checklist.checklist-warning li::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' %3E%3Ccircle cx='12' cy='12' r='10' %3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12' %3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16' %3E%3C/line%3E%3C/svg%3E");
+    }
+
+    .checklist.checklist-warning {
+      border-left: 4px solid #3182f6;
+      background: #ffffff;
+    }
+
+    .easy-note {
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+      background-color: var(--note-bg);
+      border: 1px solid var(--note-border);
+      border-left: 4px solid var(--brand-primary);
+      color: var(--note-text);
+    }
+
+    .easy-note h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .easy-note h3::before {
+      content: "💡";
+    }
+
+    .easy-note p {
+      color: var(--text-secondary) !important;
+      font-size: 15px;
+    }
+
+    .easy-note p+p {
+      margin-top: 10px;
+    }
+
+    .easy-note strong {
+      color: var(--brand-primary-dark);
+    }
+
+    .quote-card {
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+      padding: 28px;
+      background-color: #f8fafc;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .quote-card::before {
+      content: '“';
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      font-size: 80px;
+      color: rgba(49, 130, 246, 0.08);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+
+    .quote-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .quote-card blockquote {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.6;
+      font-weight: 600;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-card cite {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    .cta-box {
+      margin-top: 24px;
+      border-radius: var(--radius-md);
+      background-color: var(--cta-bg);
+      border: 1px solid var(--cta-border);
+      color: var(--cta-text);
+    }
+
+    .cta-box h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-box h3::before {
+      content: "🎯";
+    }
+
+    .cta-box ol {
+      padding-left: 20px;
+      color: #000000 !important;
+    }
+
+    .cta-box li {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .footer-note {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 40px 0;
+    }
+
+    .tip-box {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f1f5f9;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color-strong);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .tip-box strong {
+      color: var(--text-primary);
+    }
+
+    .step-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin-top: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 14px;
+    }
+
+    .step-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      background: var(--brand-primary-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .step-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .step-body p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .step-action {
+      margin: 20px 0 12px;
+    }
+
+    .web-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      background-color: var(--brand-primary);
+      color: #ffffff !important;
+      border: none;
+      cursor: pointer;
+    }
+
+    .warning-callout {
+      display: flex;
+      gap: 12px;
+      background: #f8fafc;
+      border-left: 4px solid #f59e0b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-tertiary);
+    }
+
+    .warning-callout .emoji {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .setup-details {
+      display: grid;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .setup-item {
+      display: flex;
+      gap: 12px;
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .setup-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .setup-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .step-card {
+        padding: 20px 16px;
+      }
+
+      .step-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        margin-bottom: 30px;
+      }
+
+      .toc {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 8px;
+      }
+
+      .toc a {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell {
+        padding: 20px 0 60px;
+      }
+
+      .hero {
+        padding: 40px 24px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .chapter {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="scroll-progress"></div>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="eyebrow">토스 미니앱 플레이북</div>
+      <div class="hero-grid">
+        <div>
+          <h1>코딩 없이 7일 만에 완성하는 수익형 토스 미니앱 설계 비법</h1>
+          <p>
+            아직도 코딩부터 배우시나요? <strong>상위 1% 서비스 기획자들만 아는 AI 미니앱 수익화의 비밀</strong>을 공개합니다. 복잡한 이론은 모두 빼고, 당장 돈이 되는 핵심 구조만 담았습니다. 지금 당장 시작하지 않으면 무조건 후회하는 초고속 런칭 가이드, 딱 7일이면 충분합니다.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <div class="meta-label">핵심 도구</div>
+            <div class="meta-value">Codex (Cursor/Claude Code 완벽 대응)</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">얻게 될 확실한 결과</div>
+            <div class="meta-value">7일 내 MVP 1개 런칭 · 클라이언트 리워드 · AI 자동 배포</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main class="content">
+
+        <section class="chapter" id="part-0">
+          <div class="chapter-header">
+            <div class="chapter-number">0부</div>
+            <h2>왜 토스 미니앱인가요?</h2>
+          </div>
+          <p>
+            토스 미니앱은 2,400만 토스 유저를 즉시 내 고객으로 만드는 가장 빠른 방법입니다. 앱 설치도, 복잡한 결제 연동도 필요 없습니다. 잘 짠 구조 하나만 있으면 누구나 토스의 인프라 위에서 <strong>즉시 수익을 창출</strong>할 수 있습니다. 남들이 선점하기 전에 지금 바로 시작하세요.
+          </p>
+
+          <div class="revenue-highlight"
+            style="margin: 24px 0; padding: 24px; background-color: var(--brand-primary-light); border-radius: var(--radius-md); border-left: 4px solid var(--brand-primary);">
+            <p style="margin-top: 0; font-weight: 700; color: var(--brand-primary-dark); font-size: 18px;">
+              💡 단 3주 만에 광고 매출 57만 원 달성!
+            </p>
+            <p style="font-size: 15px; color: var(--text-secondary); margin-top: 8px; line-height: 1.7;">
+              실제로 <strong>5월 10일 첫 미니앱 출시 후 3주 만에 약 57만 원(578,614원)의 광고 매출</strong>을 기록했습니다. 현재는 <strong>총 10개의 앱테크 미니앱을 직접 운영</strong>하며 꾸준한 수익 파이프라인을 만들고 있습니다. 코딩을 전혀 몰라도 AI 도구만 정확히 다룬다면 누구나 수익형 서비스의 주인이 될 수 있습니다.
+            </p>
+            <div style="margin-top: 20px; text-align: center;">
+              <img src="images/revenue.png" alt="5월 미니앱 광고 수익 대시보드"
+                style="max-width: 100%; width: 580px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: block; margin: 0 auto 8px;">
+              <span style="display: block; font-size: 13px; color: var(--text-muted); font-weight: 500;">실제 운영 중인 미니앱의 5월 한 달간 AdMob 광고 수익 인증</span>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="chapter" id="part-1">
+          <div class="chapter-header">
+            <div class="chapter-number">1부</div>
+            <h2>시작 전 필수 세팅</h2>
+          </div>
+          <p>
+            미니앱 런칭과 수익화의 첫 단추입니다. 불필요한 과정은 모두 빼고, 당장 돈이 되는 핵심 세팅만 빠르게 마칩니다. 이 필수 정보 없이 무작정 시작하면 소중한 시간만 낭비하게 됩니다.
+          </p>
+
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-badge">STEP 1</span>
+              <h3>앱인토스 콘솔 가입</h3>
+            </div>
+            <div class="step-body">
+              <p>토스 미니앱 등록부터 정산까지, 모든 관리는 '앱인토스 콘솔'에서 이루어집니다. 아래 버튼을 눌러 개발자 센터에 즉시 접근하세요.</p>
+
+              <div class="image-placeholder" style="margin: 20px 0;">
+                <div class="image-placeholder-title">토스 미니앱 공식 파트너 센터 (Apps in Toss)</div>
+                <img src="images/apps-in-toss.png" alt="토스 미니앱 공식 웹사이트 화면" style="max-width: 100%; border-radius: 8px;">
+              </div>
+
+              <div class="warning-callout">
+                <span class="emoji">🚨</span>
+                <div>
+                  <strong>수익 창출 필수 조건:</strong> 토스 광고 네트워크를 활성화하고 수익금을 정산받으려면 <strong>개인 또는 법인 사업자 등록</strong>이 반드시 필요합니다.
+                </div>
+              </div>
+              <div class="step-action">
+                <a href="https://toss.im/apps-in-toss" target="_blank" class="web-btn">앱인토스 콘솔 가입하기</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-badge">STEP 2</span>
+              <h3>미니앱 검토 미리 요청하기</h3>
+            </div>
+            <div class="step-body">
+              <p>승인까지 2~3일이 걸립니다. 개발을 완료하고 신청하면 늦습니다. 앱의 이름과 아이콘, 간단한 컨셉만으로 지금 바로 검토를 요청하세요.</p>
+
+              <div class="setup-details" style="margin-top: 20px;">
+                <div class="setup-item">
+                  <div class="setup-icon">1️⃣</div>
+                  <div class="setup-text">
+                    <strong>미니앱 생성하기:</strong> 콘솔에서 <strong>앱 만들기</strong>를 클릭해 앱 이름(appName)과 유형을 선택합니다.
+                    <div style="margin-top: 12px; text-align: center;">
+                      <img src="images/review-step-1.png" alt="앱 만들기 팝업창" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setup-item">
+                  <div class="setup-icon">2️⃣</div>
+                  <div class="setup-text">
+                    <strong>앱 기본 정보 입력하기:</strong> 생성된 앱의 <strong>수정하기</strong>를 눌러 한국어 이름, 부제, 상세 설명을 채웁니다.
+                    <div style="margin-top: 12px; text-align: center;">
+                      <img src="images/review-step-2.png" alt="앱 정보 상세" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 12px;">
+                      <img src="images/review-step-3.png" alt="앱 기본 정보 입력" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setup-item">
+                  <div class="setup-icon">3️⃣</div>
+                  <div class="setup-text">
+                    <strong>카테고리 및 노출 정보 등록:</strong> 노출될 카테고리를 정하고 아이콘 및 스크린샷을 등록합니다.
+                    <div class="tip-box" style="margin: 12px 0;">
+                      <strong>💡 꿀팁:</strong> 앱 아이콘은 <strong>ChatGPT의 이미지 생성 기능</strong>을 활용해 '토스 스타일(미니멀/플랫)'로 요청하면 가장 빠르고 깔끔하게 완성됩니다.
+                    </div>
+                    <div style="margin-top: 12px; text-align: center;">
+                      <img src="images/review-step-4.png" alt="카테고리 및 노출 정보 등록" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-badge">STEP 3</span>
+              <h3>Codex 설치 및 세팅</h3>
+            </div>
+            <div class="step-body">
+              <p>코딩을 대신해 줄 AI 개발 도구 Codex를 설치합니다. 원활한 개발을 위해 <strong>GPT Plus 이상</strong>의 유료 요금제 구독을 권장합니다.</p>
+              <div class="step-image" style="margin: 16px 0;">
+                <img src="images/codex-landing.png" alt="Codex 설치 화면"
+                  style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); display: block;">
+              </div>
+              <div class="step-action">
+                <a href="https://openai.com/ko-KR/codex/" target="_blank" class="web-btn">Codex 공식 다운로드 페이지</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-badge">STEP 4</span>
+              <h3>개발 환경설정</h3>
+            </div>
+            <div class="step-body">
+              <p>로컬 프로젝트를 생성하고, AI가 토스의 개발 스펙을 완벽하게 이해하도록 가이드 문서를 주입합니다.</p>
+
+              <div class="setup-details">
+                <div class="setup-item">
+                  <div class="setup-icon">📁</div>
+                  <div class="setup-text">
+                    <strong>프로젝트 생성:</strong> Codex를 열고 미니앱을 개발할 새 폴더를 만듭니다.
+                    <div class="setup-image" style="margin-top: 12px;">
+                      <img src="images/codex-project-setup.png" alt="Codex 프로젝트 생성"
+                        style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color); display: block;">
+                    </div>
+                  </div>
+                </div>
+                <div class="setup-item">
+                  <div class="setup-icon">📄</div>
+                  <div class="setup-text">
+                    <strong>Toss Guide 문서 제공:</strong> 아래 가이드 파일을 다운로드해 생성한 폴더에 넣습니다. AI에게 토스 미니앱 개발 지식을 학습시키는 가장 중요한 단계입니다.
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-action">
+                <a href="toss-guide-full.zip" download="toss-guide-full.zip" class="web-btn">미니앱 개발 가이드 다운로드</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" id="part-2">
+          <div class="chapter-header">
+            <div class="chapter-number">2부</div>
+            <h2>앱테크 기획 및 수익화 전략 설계</h2>
+          </div>
+          <p>
+            돈이 되는 앱테크 구조, AI로 단숨에 설계하세요. Codex의 플랜 모드(Plan Mode)와 아래 프롬프트를 활용해 <strong>확실하게 수익을 내는 미니앱 구조</strong>를 즉시 완성합니다.
+          </p>
+
+          <div class="step-image" style="margin: 24px 0; text-align: center;">
+            <img src="images/codex-plan-mode.png" alt="Codex 플랜 모드 활성화 예시"
+              style="width: 100%; max-width: 680px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: block; margin: 0 auto 12px;">
+            <span style="display: block; font-size: 13px; color: var(--text-muted); font-weight: 500;">프롬프트 입력창 상단 메뉴에서 '플랜 모드' 활성화</span>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-header">
+              <h3 class="prompt-title">프롬프트 2. 수익형 MVP 올인원 기획 및 구조 설계</h3>
+              <button class="copy-button" data-copy-target="prompt-2">프롬프트 복사</button>
+            </div>
+            <pre id="prompt-2">나의 기획에 적합한 배너/전면/보상형 광고 노출을 설계하여 확실한 수익 창출이 가능한 Apps in toss Web 형태의 토스 미니앱을 구현해줘.
+
+[요구사항]
+1. Firebase를 연동하여 최소한의 데이터를 보관할 것
+2. 공식 스타터 방식으로 구현할 것
+3. 별도 서버가 필요 없는 방식(Serverless)으로 구현할 것
+4. 계획을 수립하기 전에 나에게 몇 가지 질문을 던져서 수익화 기획안을 확정할 것
+5. 토스 디자인 시스템(TDS) 컴포넌트만 활용해서 미니멀하고 직관적인 토스 스타일 UX/UI를 구현할 것
+
+[참고 문서]
+[toss-guide-full.md](toss-guide-full.md)</pre>
+          </div>
+        </section>
+
+        <section class="chapter" id="part-3">
+          <div class="chapter-header">
+            <div class="chapter-number">3부</div>
+            <h2>화면 확인 (로컬 실행)</h2>
+          </div>
+          <p>
+            단 두 줄의 명령어면 충분합니다. 내 PC에서 완성된 화면을 즉시 확인하고 토스 스타일 UI가 잘 적용되었는지 점검하세요.
+          </p>
+
+          <div class="step-card" style="margin-top: 32px;">
+            <div class="step-header">
+              <span class="step-badge">실전 검증</span>
+              <h3>명령어 2줄로 실행하기</h3>
+            </div>
+            <div class="step-body">
+              <div class="setup-details">
+                <div class="setup-item">
+                  <div class="setup-icon">💻</div>
+                  <div class="setup-text">
+                    <strong>1. 터미널 열기:</strong> Codex 우측 상단의 터미널 버튼을 클릭합니다.
+                  </div>
+                </div>
+
+                <div class="setup-item">
+                  <div class="setup-icon">🚀</div>
+                  <div class="setup-text">
+                    <strong>2. 아래 명령어를 차례대로 실행:</strong> 터미널에 붙여넣고 엔터만 치면 됩니다.
+                    <div style="margin-top: 12px; display: grid; gap: 12px;">
+                      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1e293b; border-bottom: 1px solid #334155;">
+                          <span style="font-size: 12px; font-weight: 700; color: #f8fafc; font-family: monospace;">1. 패키지 설치</span>
+                          <button class="copy-button" data-copy-target="cmd-install" style="padding: 4px 8px; font-size: 11px;">복사</button>
+                        </div>
+                        <pre id="cmd-install" style="margin: 0; padding: 12px 16px; font-size: 13px; color: #e2e8f0; background: transparent; border: none; max-height: none;">npm run install</pre>
+                      </div>
+
+                      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1e293b; border-bottom: 1px solid #334155;">
+                          <span style="font-size: 12px; font-weight: 700; color: #f8fafc; font-family: monospace;">2. 개발 서버 실행</span>
+                          <button class="copy-button" data-copy-target="cmd-dev" style="padding: 4px 8px; font-size: 11px;">복사</button>
+                        </div>
+                        <pre id="cmd-dev" style="margin: 0; padding: 12px 16px; font-size: 13px; color: #e2e8f0; background: transparent; border: none; max-height: none;">npm run dev</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setup-item">
+                  <div class="setup-icon">🔗</div>
+                  <div class="setup-text">
+                    <strong>3. 로컬 접속 링크 확인:</strong> 터미널에 뜬 링크를 클릭해 창을 띄웁니다. 우측 상단의 주석 기능을 활용해 수정 사항을 AI에게 바로 지시할 수 있습니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" id="part-4">
+          <div class="chapter-header">
+            <div class="chapter-number">4부</div>
+            <h2>토스 앱에서 실제 구동 확인</h2>
+          </div>
+          <p>
+            내 스마트폰의 토스 앱에서 미니앱이 정상 작동하는지 직접 확인합니다. 빌드 후 QR 코드만 찍으면 끝납니다.
+          </p>
+
+          <div class="step-card" style="margin-top: 32px;">
+            <div class="step-header">
+              <span class="step-badge">실기기 검증</span>
+              <h3>빌드 및 QR 스캔</h3>
+            </div>
+            <div class="step-body">
+              <div class="setup-details">
+                <div class="setup-item">
+                  <div class="setup-icon">💻</div>
+                  <div class="setup-text">
+                    <strong>1. 터미널에서 빌드 진행:</strong>
+                    <div style="margin-top: 12px; display: grid; gap: 12px;">
+                      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1e293b; border-bottom: 1px solid #334155;">
+                          <span style="font-size: 12px; font-weight: 700; color: #f8fafc; font-family: monospace;">1. 웹 빌드</span>
+                          <button class="copy-button" data-copy-target="cmd-build" style="padding: 4px 8px; font-size: 11px;">복사</button>
+                        </div>
+                        <pre id="cmd-build" style="margin: 0; padding: 12px 16px; font-size: 13px; color: #e2e8f0; background: transparent; border: none; max-height: none;">npm run build</pre>
+                      </div>
+                      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1e293b; border-bottom: 1px solid #334155;">
+                          <span style="font-size: 12px; font-weight: 700; color: #f8fafc; font-family: monospace;">2. 토스 미니앱 패키징</span>
+                          <button class="copy-button" data-copy-target="cmd-ait-build" style="padding: 4px 8px; font-size: 11px;">복사</button>
+                        </div>
+                        <pre id="cmd-ait-build" style="margin: 0; padding: 12px 16px; font-size: 13px; color: #e2e8f0; background: transparent; border: none; max-height: none;">npx ait build</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="setup-item">
+                  <div class="setup-icon">📱</div>
+                  <div class="setup-text">
+                    <strong>2. 테스트 및 확인:</strong> 빌드된 버전을 토스 개발자 콘솔에 올리고 <strong>[테스트]</strong> 버튼을 누릅니다. 화면에 뜬 QR코드를 스마트폰으로 스캔하면 내 폰 안에서 서비스가 구동됩니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" id="part-5">
+          <div class="chapter-header">
+            <div class="chapter-number">5부</div>
+            <h2>핵심: 인앱 광고로 eCPM 극대화하기</h2>
+          </div>
+          <p>
+            결제 연동 없이도 인앱 광고만으로 확실한 수익이 발생합니다. <strong>노출 수와 eCPM(1,000회 노출당 단가)</strong>을 끌어올리는 광고 배치 전략, <strong>지금 안 보면 나만 손해</strong>입니다.
+          </p>
+
+          <div class="notice" style="margin-top: 16px; margin-bottom: 24px; border-left-color: var(--brand-primary); background-color: var(--brand-primary-light);">
+            💡 <strong>안내:</strong> 광고 수익을 정산받으려면 <strong>사업자 정보 등록</strong>이 필수입니다. 
+          </div>
+
+          <div class="checklist checklist-check" style="margin-top: 20px;">
+            <h3>📊 수익 극대화 공식</h3>
+            <div style="background: #f1f5f9; padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color-strong); font-family: monospace; font-size: 15px; font-weight: 700; color: var(--text-primary); text-align: center; margin-bottom: 16px;">
+              🎯 예상 수익 = 노출 수 × eCPM ÷ 1,000
+            </div>
+            <ul>
+              <li><strong>노출 수 늘리기:</strong> 체류 시간이 긴 메인 화면에 배너 광고를 배치해 안정적인 기본 수익을 만듭니다.</li>
+              <li><strong>eCPM 단가 높이기:</strong> 유저가 자발적으로 시청하는 보상형(리워드) 광고가 가장 eCPM이 높습니다. 포인트 지급, 잠금 해제 타이밍에 전략적으로 연동하세요.</li>
+            </ul>
+          </div>
+
+          <div class="step-card" style="margin-top: 24px; margin-bottom: 24px;">
+            <div class="step-header">
+              <span class="step-badge">콘솔 설정</span>
+              <h3>토스 파트너 센터 광고 세팅 3단계</h3>
+            </div>
+            <div class="step-body">
+              <div class="setup-details" style="margin-top: 20px;">
+                <div class="setup-item">
+                  <div class="setup-icon">🏢</div>
+                  <div class="setup-text">
+                    <strong>1. 정산 정보 등록:</strong> [정보] 탭에서 수익금을 정산받을 은행 계좌를 정확히 입력합니다. (예금주명 오류 주의)
+                  </div>
+                </div>
+                <div class="setup-item">
+                  <div class="setup-icon">➕</div>
+                  <div class="setup-text">
+                    <strong>2. 광고 그룹 생성:</strong> [인앱 광고] 탭에서 광고 지면(예: <code>메인_하단배너</code>)을 만듭니다. 보상형 광고의 경우 지급할 재화의 이름과 수량을 설정하세요.
+                  </div>
+                </div>
+                <div class="setup-item">
+                  <div class="setup-icon">🔑</div>
+                  <div class="setup-text">
+                    <strong>3. 환경변수 적용:</strong> 생성된 <strong>광고 그룹 ID</strong>를 프로젝트에 반영합니다. AI에게 <em>"env 설정에 이 배너 광고 ID 추가해줘"</em>라고 지시하면 즉시 연동됩니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-header">
+              <h3 class="prompt-title">프롬프트 5. 토스 SDK 보상형 광고 트러블슈팅 (장애 발생 시)</h3>
+              <button class="copy-button" data-copy-target="prompt-5">프롬프트 복사</button>
+            </div>
+            <p class="prompt-description">
+              실기기 테스트 시 광고가 제대로 노출되지 않거나 에러가 발생할 때 AI에게 던지는 디버깅 전용 프롬프트입니다.
+            </p>
+            <pre id="prompt-5">너는 토스 미니앱 연동 및 인앱 광고 문제 해결을 담당하는 시니어 디버깅 엔지니어이자 트러블슈팅 전문가야.
+
+현재 개발 중인 토스 미니앱에서 전면형/보상형 광고가 정상적으로 표시되지 않는 문제가 발생했어. 다음 코드를 검토하고 원인과 해결 방안을 제시해줘.
+
+[점검 요구사항]
+1. loadFullScreenAd 사전 로드(Prewarm) 여부 확인
+2. userEarnedReward 라이프사이클 이벤트 리스너 누수 점검
+3. 사용 중인 광고 그룹 ID가 테스트용인지 실제 운영용인지 구분
+4. isTossApp() 브릿지 환경 감지 및 예외 처리 검증
+
+내가 제공하는 src/lib/tossSdk.ts 코드를 바탕으로 에러 원인을 진단하고 구체적인 코드 예시와 함께 해결책을 작성해줘.</pre>
+          </div>
+        </section>
+
+        <section class="chapter" id="part-6">
+          <div class="chapter-header">
+            <div class="chapter-number">6부</div>
+            <h2>최종 정식 출시하기</h2>
+          </div>
+          <p>
+            모든 검증이 끝났다면 이제 클릭 두 번으로 수천만 유저에게 내 서비스를 공개할 시간입니다.
+          </p>
+
+          <div class="step-card" style="margin-top: 24px; margin-bottom: 24px;">
+            <div class="step-header">
+              <span class="step-badge">출시 단계</span>
+              <h3>토스 앱 정식 배포</h3>
+            </div>
+            <div class="step-body">
+              <div class="setup-details" style="margin-top: 20px;">
+                <div class="setup-item">
+                  <div class="setup-icon">📝</div>
+                  <div class="setup-text">
+                    <strong>1. 검토 요청:</strong> 앱 출시 메뉴에서 우측 <strong>[검토 요청]</strong> 버튼을 누릅니다.
+                  </div>
+                </div>
+                <div class="setup-item">
+                  <div class="setup-icon">🚀</div>
+                  <div class="setup-text">
+                    <strong>2. 출시하기:</strong> 검토가 승인되면 버튼이 <strong>[출시하기]</strong>로 변경됩니다. 클릭 즉시 정식 출시됩니다.
+                  </div>
+                </div>
+                <div class="setup-item">
+                  <div class="setup-icon">📱</div>
+                  <div class="setup-text">
+                    <strong>3. 실서비스 확인:</strong> 토스 앱 하단 <strong>[전체 탭] &gt; [바로가기] &gt; [미니앱]</strong> 메뉴에서 자랑스러운 내 서비스를 확인하세요.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h2>목차</h2>
+          <nav class="toc">
+            <a href="#part-0">0부. 왜 토스 미니앱인가요?</a>
+            <a href="#part-1">1부. 시작 전 필수 세팅</a>
+            <a href="#part-2">2부. 기획 및 전략 설계</a>
+            <a href="#part-3">3부. 화면 확인 (로컬)</a>
+            <a href="#part-4">4부. 토스 앱 확인 (실기기)</a>
+            <a href="#part-5">5부. 광고 수익 최적화</a>
+            <a href="#part-6">6부. 최종 정식 출시하기</a>
+          </nav>
+        </div>
+      </aside>
+    </div>
+
+    <p class="footer-note">
+      본 전자책은 단순히 기술 문서를 나열한 복사본이 아닙니다. 아이디어를 즉시 수익으로 연결하고 싶은 1인 창조자들을 위해 핵심만 정제한 가장 강력한 실전 플레이북입니다.
+    </p>
+  </div>
+
+  <script>
+    window.addEventListener("scroll", () => {
+      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progressBar = document.getElementById("scroll-progress");
+      if (progressBar) { progressBar.style.width = scrolled + "%"; }
+    });
+
+    const copySvg = `<svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+    const successSvg = `<svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    const errorSvg = `<svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+
+    document.querySelectorAll(".copy-button").forEach((button) => {
+      const text = button.textContent;
+      button.innerHTML = copySvg + `<span>${text}</span>`;
+    });
+
+    async function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return;
+      }
+      const helper = document.createElement("textarea");
+      helper.value = text;
+      helper.setAttribute("readonly", "");
+      helper.style.position = "absolute";
+      helper.style.left = "-9999px";
+      document.body.appendChild(helper);
+      helper.select();
+      document.execCommand("copy");
+      document.body.removeChild(helper);
+    }
+
+    document.querySelectorAll("[data-copy-target]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const targetId = button.getAttribute("data-copy-target");
+        const target = document.getElementById(targetId);
+        if (!target) return;
+
+        const originalText = button.querySelector("span").textContent;
+
+        try {
+          await copyText(target.innerText.trim());
+          button.innerHTML = successSvg + "<span>복사 완료</span>";
+          button.classList.add("copied");
+        } catch (error) {
+          button.innerHTML = errorSvg + "<span>복사 실패</span>";
+          button.classList.add("copy-failed");
+        }
+
+        window.setTimeout(() => {
+          button.innerHTML = copySvg + `<span>${originalText}</span>`;
+          button.classList.remove("copied", "copy-failed");
+        }, 1500);
+      });
+    });
+
+    document.querySelectorAll(".checklist").forEach((card) => {
+      const heading = card.querySelector("h3");
+      if (!heading) return;
+      const text = heading.textContent;
+      if (text.includes("위험") || text.includes("필독") || text.includes("주의")) {
+        card.classList.add("checklist-unfit");
+      } else if (text.includes("매트릭스") || text.includes("체크리스트")) {
+        card.classList.add("checklist-warning");
+      } else {
+        card.classList.add("checklist-check");
+      }
+    });
+
+    const chapters = document.querySelectorAll(".chapter, #appendix");
+    const tocLinks = document.querySelectorAll(".toc a");
+    const observerOptions = { root: null, rootMargin: "-20% 0px -60% 0px", threshold: 0 };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          tocLinks.forEach((link) => {
+            if (link.getAttribute("href") === `#${id}`) {
+              link.classList.add("active");
+            } else {
+              link.classList.remove("active");
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    chapters.forEach((chapter) => observer.observe(chapter));
+  </script>
+</body>
+
+</html>
